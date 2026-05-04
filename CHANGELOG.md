@@ -6,10 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ---
 
-## [1.0.3] — 2025-05-04
+## [1.0.4] — 2025-05-04
 
 ### Added
-- Demo screenshot in README
+- Demo screencast video in README
+- Comprehensive use cases section — business dashboards, distribution maps, election maps, health/NGO, education, e-commerce, government portals
+- Live demo repo link in README
 
 ---
 

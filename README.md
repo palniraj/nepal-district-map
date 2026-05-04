@@ -7,25 +7,44 @@
 
 Interactive SVG map of Nepal with all **77 districts** and **7 provinces** for React. Zero dependencies.
 
+---
+
+## Preview
+
 ![nepal-district-map demo](https://raw.githubusercontent.com/palniraj/nepal-district-map/main/demo-screenshot.png)
+
+### Video Demo
+
+https://github.com/palniraj/nepal-district-map/assets/demo-screencast.mp4
+
+> 🔗 [Live demo repo →](https://github.com/palniraj/nepal-district-map-demo)
+
+---
+
+## Features
 
 - ✅ All 77 districts with accurate SVG boundaries
 - ✅ Correct Darchula boundary (Limpiyadhura-Kalapani-Lipulekh territory)
 - ✅ Province coloring, flat coloring, or data-driven choropleth
 - ✅ Built-in hover tooltips with custom render support
 - ✅ Click handlers and keyboard navigation (accessible)
-- ✅ Province filtering
-- ✅ Color scale utilities for heatmaps
+- ✅ Province filtering with `selectedProvince` prop
+- ✅ Color scale utilities — linear and multi-stop gradients
 - ✅ Companion `<NepalMapLegend>` component
-- ✅ Raw SVG data export for custom rendering
+- ✅ Raw SVG data export for fully custom rendering
 - ✅ Full TypeScript support
+- ✅ Zero runtime dependencies (React peer dep only)
 - ✅ Works with Next.js, Vite, Remix, CRA
+
+---
 
 ## Install
 
 ```bash
 npm install nepal-district-map
 ```
+
+---
 
 ## Quick Start
 
@@ -42,78 +61,190 @@ function App() {
 }
 ```
 
-## Examples
+---
 
-### Choropleth (Data Visualization)
+## Use Cases
 
-Color districts by numeric values with a color scale:
+### 🏢 Business Dashboards
+Visualize sales, revenue, or performance data across Nepal's districts. Color each district based on a metric — instantly see which regions are performing and which need attention.
 
 ```tsx
-import { NepalMap, createColorScale, getDataStats } from "nepal-district-map";
+import { NepalMap, createMultiColorScale, getDataStats } from "nepal-district-map";
 
-const data = {
-  Kathmandu: { value: 2017532, tooltip: "Population: 20.17L" },
-  Morang: { value: 965370, tooltip: "Population: 9.65L" },
-  Rupandehi: { value: 880196, tooltip: "Population: 8.80L" },
-  Jhapa: { value: 812650, tooltip: "Population: 8.13L" },
-  // ... add more districts
+const salesData = {
+  Kathmandu: { value: 450000, tooltip: "Sales: Rs. 4.5L" },
+  Pokhara: { value: 210000, tooltip: "Sales: Rs. 2.1L" },
+  Butwal: { value: 180000, tooltip: "Sales: Rs. 1.8L" },
+  // ... all districts
 };
 
-const stats = getDataStats(data);
-const scale = createColorScale(stats.min, stats.max, "#22c55e", "#dc2626");
+const stats = getDataStats(salesData);
+const scale = createMultiColorScale(stats.min, stats.max, ["#dc2626", "#eab308", "#22c55e"]);
 
-function PopulationMap() {
-  return (
-    <NepalMap
-      data={data}
-      colorMode="data"
-      colorScale={scale}
-      backgroundColor="#0f172a"
-      labelColor="#fff"
-      strokeColor="#1e293b"
-    />
-  );
-}
+<NepalMap
+  data={salesData}
+  colorMode="data"
+  colorScale={scale}
+  backgroundColor="#0f172a"
+  onDistrictClick={(name, data) => openDistrictReport(name, data)}
+/>
 ```
 
-### Multi-Stop Color Scale
+---
+
+### 🚚 Distribution & Coverage Maps
+Show your distribution network — mark distributor hubs and covered areas. Perfect for FMCG, logistics, telecom, and retail companies operating across Nepal.
 
 ```tsx
-import { createMultiColorScale } from "nepal-district-map";
+import { NepalMap, NepalMapLegend } from "nepal-district-map";
 
-// Green → Yellow → Red
-const scale = createMultiColorScale(0, 100, ["#22c55e", "#eab308", "#dc2626"]);
+const network = {
+  Kathmandu: { color: "#FFD600", tooltip: "📍 Main Hub" },
+  Lalitpur:  { color: "#3b82f6", tooltip: "✓ Covered" },
+  Bhaktapur: { color: "#3b82f6", tooltip: "✓ Covered" },
+  Kaski:     { color: "#FFD600", tooltip: "📍 Regional Hub" },
+  Baglung:   { color: "#3b82f6", tooltip: "✓ Covered by Kaski" },
+};
+
+<NepalMapLegend
+  mode="custom"
+  items={[
+    { color: "#FFD600", label: "Distributor Hub" },
+    { color: "#3b82f6", label: "Covered District" },
+    { color: "#1a2744", label: "Expansion Opportunity" },
+  ]}
+/>
+<NepalMap
+  data={network}
+  colorMode="flat"
+  baseColor="#1a2744"
+  backgroundColor="#0B2A4A"
+/>
 ```
 
-### Distribution / Coverage Map
+---
 
-Highlight specific districts with custom colors:
+### 🗳️ Election & Political Maps
+Display election results, vote share, or party presence by district. Use province filtering to drill into specific regions.
 
 ```tsx
 import { NepalMap } from "nepal-district-map";
 
-const coverage = {
-  Kathmandu: { color: "#FFD600", tooltip: "📍 Distributor Hub" },
-  Lalitpur: { color: "#3b82f6", tooltip: "✓ Covered by Kathmandu" },
-  Bhaktapur: { color: "#3b82f6", tooltip: "✓ Covered by Kathmandu" },
-  Kaski: { color: "#FFD600", tooltip: "📍 Distributor Hub" },
-  Baglung: { color: "#3b82f6", tooltip: "✓ Covered by Kaski" },
+const results = {
+  Kathmandu: { color: "#dc2626", tooltip: "Party A — 62%" },
+  Kaski:     { color: "#2563eb", tooltip: "Party B — 55%" },
+  Surkhet:   { color: "#16a34a", tooltip: "Party C — 48%" },
+  // ...
 };
 
-function CoverageMap() {
+<NepalMap data={results} colorMode="flat" baseColor="#334155" />
+```
+
+---
+
+### 🏥 Public Health & NGO Reporting
+Map health indicators, vaccination coverage, disaster impact zones, or program reach across districts. Ideal for NGOs, government agencies, and research institutions.
+
+```tsx
+import { NepalMap, createColorScale } from "nepal-district-map";
+
+const vaccinationRate = {
+  Kathmandu:  { value: 94, tooltip: "Vaccination: 94%" },
+  Humla:      { value: 41, tooltip: "Vaccination: 41%" },
+  Dolpa:      { value: 38, tooltip: "Vaccination: 38%" },
+  // ...
+};
+
+const scale = createColorScale(0, 100, "#dc2626", "#16a34a"); // red → green
+
+<NepalMap
+  data={vaccinationRate}
+  colorMode="data"
+  colorScale={scale}
+  renderTooltip={(name, data) => (
+    <div>
+      <strong>{name}</strong>
+      <p style={{ color: "#86efac" }}>{data?.tooltip}</p>
+    </div>
+  )}
+/>
+```
+
+---
+
+### 🏫 Education & Research
+Visualize literacy rates, school enrollment, or research survey data across Nepal's districts and provinces.
+
+```tsx
+import { NepalMap, getProvinceSummary } from "nepal-district-map";
+
+const literacyData = {
+  Kathmandu: { value: 91.7 },
+  Humla:     { value: 47.2 },
+  // ...
+};
+
+// Get province-level summary for a sidebar
+const summary = getProvinceSummary(literacyData);
+```
+
+---
+
+### 🌐 News & Media Portals
+Embed an interactive map in news articles, letting readers explore data by district — weather events, economic indicators, infrastructure projects.
+
+---
+
+### 🏗️ Government & Municipal Portals
+Display project status, budget allocation, or service coverage across districts. Province filter lets users focus on their region.
+
+```tsx
+import { NepalMap, NepalMapLegend } from "nepal-district-map";
+import { useState } from "react";
+import type { Province } from "nepal-district-map";
+
+function GovernmentDashboard() {
+  const [province, setProvince] = useState<Province | null>(null);
+
   return (
-    <NepalMap
-      data={coverage}
-      colorMode="flat"
-      baseColor="#1a2744"
-      strokeColor="#1C5A8A40"
-      backgroundColor="#0B2A4A"
-    />
+    <>
+      <NepalMapLegend
+        selectedProvince={province}
+        onProvinceClick={(p) => setProvince(province === p ? null : p)}
+      />
+      <NepalMap
+        selectedProvince={province}
+        data={projectStatusData}
+        colorMode="flat"
+        onDistrictClick={(name) => router.push(`/district/${name}`)}
+      />
+    </>
   );
 }
 ```
 
-### Province Filter
+---
+
+### 🛒 E-commerce & Delivery Platforms
+Show delivery availability, shipping zones, or estimated delivery times by district.
+
+```tsx
+const deliveryZones = {
+  Kathmandu: { color: "#22c55e", tooltip: "Same day delivery" },
+  Pokhara:   { color: "#22c55e", tooltip: "Same day delivery" },
+  Butwal:    { color: "#eab308", tooltip: "Next day delivery" },
+  Dhangadhi: { color: "#f97316", tooltip: "2–3 days" },
+  Humla:     { color: "#dc2626", tooltip: "5–7 days" },
+};
+
+<NepalMap data={deliveryZones} colorMode="flat" baseColor="#1e293b" />
+```
+
+---
+
+## Examples
+
+### Province Filter with Legend
 
 ```tsx
 import { NepalMap, NepalMapLegend } from "nepal-district-map";
@@ -142,43 +273,17 @@ function FilterableMap() {
   renderTooltip={(name, data) => (
     <div>
       <strong>{name}</strong>
-      {data?.value && <p>Sales: Rs. {data.value.toLocaleString()}</p>}
+      {data?.value && <p>Value: {data.value.toLocaleString()}</p>}
     </div>
   )}
 />
 ```
 
-### Legend Component
-
-```tsx
-import { NepalMapLegend } from "nepal-district-map";
-
-// Province legend (automatic)
-<NepalMapLegend mode="province" direction="horizontal" />
-
-// Custom legend
-<NepalMapLegend
-  mode="custom"
-  items={[
-    { color: "#FFD600", label: "Distributor Hub" },
-    { color: "#3b82f6", label: "Covered District" },
-    { color: "#1a2744", label: "Not Yet Covered" },
-  ]}
-/>
-```
-
-### Using Raw Data (No Component)
-
-Access district SVG paths and province data for custom rendering:
+### Raw SVG Data (No Component)
 
 ```tsx
 import { DISTRICTS, DISTRICT_PROVINCE, PROVINCES } from "nepal-district-map/data";
 
-// DISTRICTS: Array of { id, name, d, cx, cy }
-// DISTRICT_PROVINCE: Record<string, Province>
-// PROVINCES: Array of { name, color, stroke, districts }
-
-// Build your own SVG
 <svg viewBox="0 0 1200 800">
   {DISTRICTS.map(d => (
     <path key={d.id} d={d.d} fill={myColorFn(d.name)} />
@@ -208,12 +313,14 @@ getProvinceByDistrict("Kathmandu");
 getTotalDistricts();
 // → 77
 
-getDataStats(myData);
+const stats = getDataStats(myData);
 // → { min, max, count, total, average }
 
-getProvinceSummary(myData);
-// → [{ province: "Koshi", color: "#E8505B", totalDistricts: 14, coveredDistricts: 5, totalValue: 1234 }, ...]
+const summary = getProvinceSummary(myData);
+// → [{ province, color, totalDistricts, coveredDistricts, totalValue }, ...]
 ```
+
+---
 
 ## API Reference
 
@@ -267,24 +374,25 @@ getProvinceSummary(myData);
 ### Types
 
 ```typescript
-type Province = "Koshi" | "Madhesh" | "Bagmati" | "Gandaki"
+type Province =
+  | "Koshi" | "Madhesh" | "Bagmati" | "Gandaki"
   | "Lumbini" | "Karnali" | "Sudurpashchim";
 
 interface DistrictData {
-  value?: number;       // Numeric value for choropleth
-  color?: string;       // Override fill color
-  tooltip?: string;     // Tooltip text
+  value?: number;         // Numeric value for choropleth
+  color?: string;         // Override fill color
+  tooltip?: string;       // Tooltip text
   [key: string]: unknown; // Any extra metadata
 }
 
 type DistrictDataMap = Record<string, DistrictData>;
 
 interface DistrictPath {
-  id: string;    // Unique kebab-case id
-  name: string;  // Display name
-  d: string;     // SVG path data
-  cx: number;    // Label center X
-  cy: number;    // Label center Y
+  id: string;   // Unique kebab-case id
+  name: string; // Display name
+  d: string;    // SVG path data
+  cx: number;   // Label center X (viewBox 0–1200)
+  cy: number;   // Label center Y (viewBox 0–800)
 }
 
 interface LegendItem {
@@ -293,6 +401,8 @@ interface LegendItem {
   value?: string | number;
 }
 ```
+
+---
 
 ## All 77 Districts
 
@@ -306,13 +416,31 @@ interface LegendItem {
 | **Karnali** | Dolpa, Mugu, Humla, Jumla, Kalikot, Dailekh, Jajarkot, Surkhet, Salyan, Rukum West | 10 |
 | **Sudurpashchim** | Bajura, Bajhang, Darchula, Baitadi, Dadeldhura, Doti, Achham, Kailali, Kanchanpur | 9 |
 
+---
+
+## Accessibility
+
+- SVG has `role="img"` and `aria-label`
+- Each district has `aria-label` with name, province, and data context
+- Interactive districts are keyboard-focusable (`tabIndex={0}`)
+- Enter/Space triggers click on focused districts
+- Tooltip uses `role="tooltip"` and `aria-live="polite"`
+
+## Browser Support
+
+All modern browsers — Chrome, Firefox, Safari, Edge. IE11 not supported.
+
+---
+
 ## Changelog
 
 Read [CHANGELOG.md](./CHANGELOG.md) for complete release history.
 
 ## Contributing
 
-I would love to have some of your contributions to this project. Please check the [Contributing Guide](./CONTRIBUTING.md) for contribution guidelines.
+I would love to have your contributions. Please check the [Contributing Guide](./CONTRIBUTING.md) for guidelines.
+
+---
 
 ## Author
 
@@ -325,4 +453,4 @@ I would love to have some of your contributions to this project. Please check th
 
 ## License
 
-[MIT](./LICENSE) © 2026 Niraj Pal
+[MIT](./LICENSE) © 2025 Niraj Pal
