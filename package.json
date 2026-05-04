@@ -1,0 +1,78 @@
+{
+  "name": "nepal-district-map",
+  "version": "1.0.0",
+  "description": "Interactive SVG map of Nepal with all 77 districts and 7 provinces for React. Choropleth, hover, click, province filter — zero dependencies.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.mjs",
+      "require": "./dist/data.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "size": "npx bundlephobia nepal-district-map"
+  },
+  "keywords": [
+    "nepal",
+    "map",
+    "svg",
+    "react",
+    "districts",
+    "provinces",
+    "interactive",
+    "choropleth",
+    "nepal-map",
+    "geographic",
+    "visualization",
+    "dashboard",
+    "nepal-districts",
+    "77-districts",
+    "7-provinces",
+    "svg-map",
+    "data-visualization",
+    "heatmap",
+    "coverage-map",
+    "distribution-map"
+  ],
+  "author": "Niraj Pal (https://github.com/palniraj)",
+  "license": "MIT",
+  "homepage": "https://github.com/palniraj/nepal-district-map#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palniraj/nepal-district-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/palniraj/nepal-district-map/issues"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}
