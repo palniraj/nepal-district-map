@@ -6,6 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ---
 
+## [1.0.5] — 2025-05-04
+
+### Fixed
+- Updated video demo URL to correct GitHub assets CDN link
+
+---
+
 ## [1.0.4] — 2025-05-04
 
 ### Added
