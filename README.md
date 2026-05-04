@@ -7,6 +7,8 @@
 
 Interactive SVG map of Nepal with all **77 districts** and **7 provinces** for React. Zero dependencies.
 
+![nepal-district-map demo](https://raw.githubusercontent.com/palniraj/nepal-district-map/main/demo-screenshot.png)
+
 - ✅ All 77 districts with accurate SVG boundaries
 - ✅ Correct Darchula boundary (Limpiyadhura-Kalapani-Lipulekh territory)
 - ✅ Province coloring, flat coloring, or data-driven choropleth
@@ -304,22 +306,23 @@ interface LegendItem {
 | **Karnali** | Dolpa, Mugu, Humla, Jumla, Kalikot, Dailekh, Jajarkot, Surkhet, Salyan, Rukum West | 10 |
 | **Sudurpashchim** | Bajura, Bajhang, Darchula, Baitadi, Dadeldhura, Doti, Achham, Kailali, Kanchanpur | 9 |
 
-## Accessibility
+## Changelog
 
-- SVG has `role="img"` and `aria-label`
-- Each district has an `aria-label` with name, province, and data
-- Interactive districts are keyboard-focusable (`tabIndex={0}`)
-- Enter/Space triggers click on focused districts
-- Tooltip uses `role="tooltip"` and `aria-live="polite"`
-
-## Browser Support
-
-Works in all modern browsers (Chrome, Firefox, Safari, Edge). IE11 is not supported.
+Read [CHANGELOG.md](./CHANGELOG.md) for complete release history.
 
 ## Contributing
 
-Contributions are welcome. Please open an issue first to discuss what you'd like to change.
+I would love to have some of your contributions to this project. Please check the [Contributing Guide](./CONTRIBUTING.md) for contribution guidelines.
+
+## Author
+
+**Niraj Pal**
+
+- 🌐 Website: [nirajpal.com.np](https://nirajpal.com.np/)
+- 🐙 GitHub: [@palniraj](https://github.com/palniraj)
+- 💼 LinkedIn: [niraj-pal](https://www.linkedin.com/in/niraj-pal/)
+- 🔧 Upwork: [nirajpal](https://www.upwork.com/freelancers/nirajpal)
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) © 2026 Niraj Pal

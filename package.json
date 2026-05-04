@@ -1,6 +1,6 @@
 {
   "name": "nepal-district-map",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Interactive SVG map of Nepal with all 77 districts and 7 provinces for React. Choropleth, hover, click, province filter — zero dependencies.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,7 +22,9 @@
     "dist",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "demo-screenshot.png"
   ],
   "scripts": {
     "build": "tsup",
