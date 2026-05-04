@@ -15,7 +15,7 @@ Interactive SVG map of Nepal with all **77 districts** and **7 provinces** for R
 
 ### Video Demo
 
-https://github.com/palniraj/nepal-district-map/assets/demo-screencast.mp4
+https://github.com/user-attachments/assets/709b9f44-225d-4589-bde9-d9bb2d39106e
 
 > 🔗 [Live demo repo →](https://github.com/palniraj/nepal-district-map-demo)
 
