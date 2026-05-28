@@ -17,7 +17,7 @@ Interactive SVG map of Nepal with all **77 districts** and **7 provinces** for R
 
 https://github.com/user-attachments/assets/709b9f44-225d-4589-bde9-d9bb2d39106e
 
-> 🔗 [Live demo repo →](https://github.com/palniraj/nepal-district-map-demo)
+> 🔗 [**Try the live demo →**](https://palniraj.github.io/nepal-district-map-demo/)
 
 ---
 
@@ -27,8 +27,11 @@ https://github.com/user-attachments/assets/709b9f44-225d-4589-bde9-d9bb2d39106e
 - ✅ Correct Darchula boundary (Limpiyadhura-Kalapani-Lipulekh territory)
 - ✅ Province coloring, flat coloring, or data-driven choropleth
 - ✅ Built-in hover tooltips with custom render support
+- ✅ Touch & mobile support (Pointer Events)
 - ✅ Click handlers and keyboard navigation (accessible)
 - ✅ Province filtering with `selectedProvince` prop
+- ✅ Programmatic highlighting via `highlightedDistricts` prop
+- ✅ Configurable tooltip position — including follow-cursor mode
 - ✅ Color scale utilities — linear and multi-stop gradients
 - ✅ Companion `<NepalMapLegend>` component
 - ✅ Raw SVG data export for fully custom rendering
@@ -279,6 +282,70 @@ function FilterableMap() {
 />
 ```
 
+### Search Highlight (new in 1.1)
+
+Highlight districts matching a search query:
+
+```tsx
+import { NepalMap, DISTRICT_NAMES } from "nepal-district-map";
+import { useState, useMemo } from "react";
+
+function SearchableMap() {
+  const [query, setQuery] = useState("");
+
+  const matches = useMemo(
+    () => DISTRICT_NAMES.filter(d => d.toLowerCase().includes(query.toLowerCase())),
+    [query]
+  );
+
+  return (
+    <>
+      <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search district..." />
+      <NepalMap
+        highlightedDistricts={query ? matches : []}
+        highlightColor="#22c55e"
+      />
+    </>
+  );
+}
+```
+
+### Tooltip Following Cursor (new in 1.1)
+
+```tsx
+<NepalMap tooltipPosition="follow-cursor" />
+```
+
+### Currency Formatting (new in 1.1)
+
+```tsx
+<NepalMap
+  data={salesData}
+  colorMode="data"
+  valueFormatter={(v) => `Rs. ${v.toLocaleString("en-NP")}`}
+/>
+```
+
+### Disabling Specific Districts (new in 1.1)
+
+Mark districts as unavailable (e.g. no data, restricted access):
+
+```tsx
+const data = {
+  Kathmandu: { value: 100 },
+  Mustang:   { disabled: true, tooltip: "No data available" },
+  Manang:    { disabled: true, tooltip: "No data available" },
+};
+
+<NepalMap data={data} onDistrictClick={(name) => console.log(name)} />
+```
+
+### View-Only Mode (new in 1.1)
+
+```tsx
+<NepalMap data={data} disabled />
+```
+
 ### Raw SVG Data (No Component)
 
 ```tsx
@@ -353,6 +420,11 @@ const summary = getProvinceSummary(myData);
 | `ariaLabel` | `string` | `"Interactive map of Nepal"` | Accessible label |
 | `dimOpacity` | `number` | `0.2` | Opacity for non-selected provinces |
 | `transitionDuration` | `number` | `200` | Animation duration in ms (0 to disable) |
+| `tooltipPosition` | `TooltipPosition` | `"top-right"` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right" \| "follow-cursor"` |
+| `valueFormatter` | `(value: number) => string` | — | Format numeric values in the default tooltip |
+| `highlightedDistricts` | `string[]` | — | Programmatically highlight districts (e.g. search results) |
+| `highlightColor` | `string` | `"#FFD600"` | Stroke color for highlighted districts |
+| `disabled` | `boolean` | `false` | View-only mode — disables all interactions |
 
 ### `<NepalMapLegend>` Props
 
@@ -382,6 +454,7 @@ interface DistrictData {
   value?: number;         // Numeric value for choropleth
   color?: string;         // Override fill color
   tooltip?: string;       // Tooltip text
+  disabled?: boolean;     // Disable this specific district
   [key: string]: unknown; // Any extra metadata
 }
 

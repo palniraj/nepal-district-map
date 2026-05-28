@@ -1,6 +1,6 @@
 // Components
 export { NepalMap } from "./NepalMap";
-export type { NepalMapProps } from "./NepalMap";
+export type { NepalMapProps, TooltipPosition } from "./NepalMap";
 
 export { NepalMapLegend } from "./NepalMapLegend";
 export type { NepalMapLegendProps, LegendItem } from "./NepalMapLegend";

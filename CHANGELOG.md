@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ---
 
+## [1.1.0] — 2025-05-28
+
+### Added
+- **Touch / mobile support** — replaced `onMouseEnter`/`onMouseLeave` with Pointer Events so hover works on phones and tablets
+- **`highlightedDistricts` prop** — programmatically highlight specific districts (e.g. search results) with a stronger stroke
+- **`highlightColor` prop** — customize the highlight stroke color (default `#FFD600`)
+- **`tooltipPosition` prop** — choose between `"top-right"`, `"top-left"`, `"bottom-right"`, `"bottom-left"`, or `"follow-cursor"`
+- **`valueFormatter` prop** — format numeric values in the default tooltip (e.g. currency, abbreviations)
+- **`disabled` prop** — view-only mode that disables all interactions
+- **`disabled` flag in `DistrictData`** — disable specific districts individually (e.g. unavailable regions)
+- Exported `TooltipPosition` type
+
+### Changed
+- Pointer events replace mouse events for cross-device compatibility (no breaking changes for existing users)
+- Tooltip respects `valueFormatter` when displaying numeric values
+
+---
+
 ## [1.0.5] — 2025-05-04
 
 ### Fixed

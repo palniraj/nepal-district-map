@@ -45,6 +45,8 @@ export interface DistrictData {
   color?: string;
   /** Custom tooltip content (string or ReactNode via render prop) */
   tooltip?: string;
+  /** Disable this specific district — non-clickable, non-hoverable */
+  disabled?: boolean;
   /** Any extra metadata the consumer wants to attach */
   [key: string]: unknown;
 }
